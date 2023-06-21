@@ -20,6 +20,11 @@ body {
     margin: 50px;
     box-shadow: 0 2px 3px -2px $black;
 
+    #nav-heading-1,
+    #nav-heading-2 {
+      height: 100%;
+    }
+
     #nav-label-1 {
       border-radius: 5px 0 0 5px;
     }
@@ -46,7 +51,8 @@ body {
       cursor: pointer;
     }
 
-    input[type='radio'] {
+    input[type='radio'],
+    input[type='checkbox'] {
       visibility: hidden;
       height: 0;
       width: 0;
@@ -54,6 +60,7 @@ body {
     }
 
     input[type='radio']:checked + label,
+    input[type='checkbox']:checked + label,
     input[type='submit'] {
       color: $white;
       background-color: $dark-purple;
@@ -73,14 +80,6 @@ body {
     }
 
     #generator-1 {
-      #radio-1-row-1 {
-        margin-right: 0.1px;
-      }
-
-      #radio-1-row-2 {
-        margin-left: 0.1px;
-      }
-
       .additional-1 {
         h1 {
           text-align: left;
@@ -110,6 +109,10 @@ body {
       #radio-4-row-3 {
         margin-bottom: 10px;
       }
+
+      input[type='checkbox'] + label {
+        margin-bottom: 3px;
+      }
     }
 
     #generator-2 {
@@ -133,10 +136,6 @@ body {
         box-sizing: border-box; /* miks reset.scss ei apply? */
         padding: 10px 5px 0 10px;
         margin-bottom: 3px;
-      }
-
-      #carbohydrates-content {
-        margin-bottom: 10px;
       }
 
       option {
