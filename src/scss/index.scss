@@ -61,7 +61,7 @@ body {
 
     input[type='radio']:checked + label,
     input[type='checkbox']:checked + label,
-    input[type='submit'] {
+    button {
       color: $white;
       background-color: $dark-purple;
     }
@@ -150,7 +150,27 @@ body {
       }
     }
 
-    #submit-button {
+    .calculated-macros {
+      text-align: center;
+
+      h1 {
+        font-size: large;
+        margin-top: 20px;
+        margin-bottom: 0;
+      }
+
+      p {
+        margin: 8px;
+      }
+
+      .extra-p {
+        font-weight: bold;
+      }
+    }
+
+    #submit-button,
+    #plan-button {
+      @extend input;
       height: 35px;
       font-family: inherit;
       font-weight: bold;

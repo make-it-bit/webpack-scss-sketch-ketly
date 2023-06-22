@@ -174,7 +174,7 @@
       <!-- if user chooses "enter your own macros" -->
       <div class="row m-0 p-3 pt-0" id="generator-2">
         <div class="text-content p-0" id="diet-content">
-          <select class="text-input" name="diet-type">
+          <select class="text-input" id="diet-input" name="diet-type">
             <option selected value="normal">Normal</option>
             <option value="vegetarian">Vegetarian</option>
             <option value="vegan">Vegan</option>
@@ -182,26 +182,26 @@
           <label class="text-label" for="text-input">Diet Type</label>
         </div>
         <div class="text-content p-0" id="calories-content">
-          <input type="text" class="text-input" value="2200" min="0" max="9999" />
+          <input type="text" id="calories-input" class="text-input" value="2200" min="0" max="9999" />
           <label class="text-label" for="text-input">Calories</label>
         </div>
         <div class="text-content p-0" id="protein-content">
-          <input type="text" class="text-input" value="150" min="0" max="999" />
+          <input type="text" id="protein-input" class="text-input" value="150" min="0" max="999" />
           <label class="text-label" for="text-input">Protein</label>
         </div>
-        <div class="text-content p-0" id="fat-content">
-          <input type="text" class="text-input" value="85" min="0" max="999" />
-          <label class="text-label" for="text-input">Fat</label>
+        <div class="text-content p-0" id="fats-content">
+          <input type="text" id="fats-input" class="text-input" value="85" min="0" max="999" />
+          <label class="text-label" for="text-input">Fats</label>
         </div>
         <div class="text-content p-0" id="carbohydrates-content">
-          <input type="text" class="text-input" value="285" min="0" max="999" />
+          <input type="text" id="carbohydrates-input" class="text-input" value="285" min="0" max="999" />
           <label class="text-label" for="text-input">Carbohydrates</label>
         </div>
       </div>
       <div class="row m-0 p-3 pt-0">
         <div class="col-12">
           <div class="row mt-3">
-            <input type="submit" id="submit-button" name="submit" value="Calculate Macros" />
+            <button type="button" id="submit-button">Calculate Macros</button>
           </div>
         </div>
       </div>
