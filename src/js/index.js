@@ -1,6 +1,6 @@
 import '../scss/index.scss';
 import '../scss/reset.scss';
-import '../../node_modules/bootstrap/scss/bootstrap-grid.scss';
+// import '../scss/_reset.scss';
 
 let checkedNavHeading = 'calculate';
 
