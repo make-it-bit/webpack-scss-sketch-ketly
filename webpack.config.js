@@ -8,6 +8,7 @@ module.exports = {
   entry: {
     main: './src/js/index.js',
   },
+
   output: {
     path: path.resolve(__dirname, './dist'),
     filename: './js/index.js',
@@ -26,6 +27,7 @@ module.exports = {
       },
     ],
   },
+
   plugins: [
     new HtmlWebpackPlugin({
       title: 'project 7 - index.html',
