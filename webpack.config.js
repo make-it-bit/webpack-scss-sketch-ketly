@@ -3,16 +3,21 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+/* copyplugin ja babel ka? */
+
 module.exports = {
   mode: 'development',
+
   entry: {
-    main: './src/js/index.js',
+    index: './src/js/index.js',
+    mealPlan: './src/js/meal-plan.js',
   },
 
   output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: './js/index.js',
+    path: path.resolve(__dirname, 'dist'),
+    filename: './js/[name].js',
   },
+
   module: {
     rules: [
       {
@@ -33,17 +38,32 @@ module.exports = {
       title: 'project 7 - index.html',
       template: path.resolve(__dirname, './src/index.html'),
       filename: './index.html',
+      chunks: ['index'],
+    }),
+    new HtmlWebpackPlugin({
+      title: 'project 7 - meal-plan.html',
+      template: path.resolve(__dirname, './src/meal-plan.html'),
+      filename: './meal-plan.html',
+      chunks: ['mealPlan'],
     }),
     new MiniCssExtractPlugin({
-      filename: './css/index.css',
+      filename: './css/_reset.css',
+    }),
+    new MiniCssExtractPlugin({
+      filename: './css/_bootstrap-grid.css',
+    }),
+    new MiniCssExtractPlugin({
+      filename: './css/_index.css',
     }),
   ],
+
   devServer: {
     static: {
-      directory: path.resolve(__dirname, './public'),
+      directory: path.resolve(__dirname, 'public') /* src kausta pane public kaust? */,
     },
     compress: true,
     port: 8080,
   },
+
   devtool: 'inline-source-map',
 };

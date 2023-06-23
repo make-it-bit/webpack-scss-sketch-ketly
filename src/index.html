@@ -22,7 +22,7 @@
         </div>
       </div>
       <!-- if user chooses "calculate your macros" -->
-      <div class="row m-0 p-3 pt-0" id="generator-1">
+      <div class="row m-0 px-3" id="generator-1">
         <label for="height" id="height-label">Height (cm)</label>
         <input type="text" id="height-input" name="height" min="100" max="250" />
         <label for="weight" id="weight-label">Weight (kg)</label>
@@ -128,6 +128,36 @@
             <label class="extra additional-2" for="diet-type-vegan">Vegan </label>
           </div>
         </div>
+      </div>
+      <!-- if user chooses "enter your own macros" -->
+      <div class="row m-0 px-3" id="generator-2">
+        <div class="text-content p-0" id="diet-content">
+          <select class="text-input" id="diet-type-input" name="diet-type">
+            <option selected value="normal">Normal</option>
+            <option value="vegetarian">Vegetarian</option>
+            <option value="vegan">Vegan</option>
+          </select>
+          <label class="text-label" for="text-input">Diet Type</label>
+        </div>
+        <div class="text-content p-0" id="calories-content">
+          <input type="text" id="calories-input" class="text-input" value="2200" min="0" max="9999" />
+          <label class="text-label" for="text-input">Calories</label>
+        </div>
+        <div class="text-content p-0" id="protein-content">
+          <input type="text" id="protein-input" class="text-input" value="150" min="0" max="999" />
+          <label class="text-label" for="text-input">Protein</label>
+        </div>
+        <div class="text-content p-0" id="fats-content">
+          <input type="text" id="fats-input" class="text-input" value="85" min="0" max="999" />
+          <label class="text-label" for="text-input">Fats</label>
+        </div>
+        <div class="text-content p-0" id="carbohydrates-content">
+          <input type="text" id="carbohydrates-input" class="text-input" value="285" min="0" max="999" />
+          <label class="text-label" for="text-input">Carbohydrates</label>
+        </div>
+      </div>
+      <!-- same content for both form options! -->
+      <div class="row m-0 p-3 pt-0" id="generator-1-2">
         <label for="allergies" id="allergies-label">Allergies</label>
         <div class="row m-0 p-0">
           <div class="col-4">
@@ -169,37 +199,8 @@
             </div>
           </div>
         </div>
-      </div>
-      <!-- if user chooses "enter your own macros" -->
-      <div class="row m-0 p-3 pt-0" id="generator-2">
-        <div class="text-content p-0" id="diet-content">
-          <select class="text-input" id="diet-type-input" name="diet-type">
-            <option selected value="normal">Normal</option>
-            <option value="vegetarian">Vegetarian</option>
-            <option value="vegan">Vegan</option>
-          </select>
-          <label class="text-label" for="text-input">Diet Type</label>
-        </div>
-        <div class="text-content p-0" id="calories-content">
-          <input type="text" id="calories-input" class="text-input" value="2200" min="0" max="9999" />
-          <label class="text-label" for="text-input">Calories</label>
-        </div>
-        <div class="text-content p-0" id="protein-content">
-          <input type="text" id="protein-input" class="text-input" value="150" min="0" max="999" />
-          <label class="text-label" for="text-input">Protein</label>
-        </div>
-        <div class="text-content p-0" id="fats-content">
-          <input type="text" id="fats-input" class="text-input" value="85" min="0" max="999" />
-          <label class="text-label" for="text-input">Fats</label>
-        </div>
-        <div class="text-content p-0" id="carbohydrates-content">
-          <input type="text" id="carbohydrates-input" class="text-input" value="285" min="0" max="999" />
-          <label class="text-label" for="text-input">Carbohydrates</label>
-        </div>
-      </div>
-      <div class="row m-0 p-3 pt-0">
-        <div class="col-12">
-          <div class="row mt-3">
+        <div class="col-12 mt-4 mb-2" id="button">
+          <div class="row">
             <button type="button" id="submit-button">Calculate Macros</button>
           </div>
         </div>
