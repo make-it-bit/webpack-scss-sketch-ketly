@@ -1,0 +1,58 @@
+@import '_variables.scss';
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: $light-purple;
+  margin: 50px;
+
+  .meal {
+    justify-content: center;
+    width: 50%;
+    box-sizing: border-box;
+    border: solid 1px $dark-purple;
+    border-radius: 5px;
+    background-color: $white;
+    box-shadow: 0 2px 3px -2px $black;
+    padding: 15px;
+    margin-bottom: 5px;
+
+    h2 {
+      text-align: center;
+      margin: 0 0 8px 0;
+    }
+
+    p {
+      margin: 5px;
+    }
+
+    span {
+      font-weight: bold;
+    }
+
+    .ingredients {
+      text-align: center;
+      margin: 13px 0;
+    }
+
+    .ingredient,
+    .image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    img {
+      width: 30%;
+      border: solid 0.5px $dark-purple;
+      border-radius: 50%;
+    }
+  }
+
+  .meal:last-child {
+    margin-bottom: 0;
+  }
+}

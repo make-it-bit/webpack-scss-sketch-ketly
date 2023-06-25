@@ -4,61 +4,133 @@ import '../scss/_bootstrap-grid.scss';
 
 let checkedNavOption = 'calculate';
 let mealPlanInfo = {};
-let completeMealPlan = {};
 
 document.getElementById('nav')?.addEventListener('change', () => {
   checkedNavOption = document.querySelector('input[name="heading"]:checked')?.value;
-  document.getElementById('submit-button')?.removeAttribute('class');
+  document.querySelector('.alert')?.remove();
+  document.querySelector('.alert-message')?.remove();
   if (document.querySelectorAll('input[name="allergy"]:checked').length > 0) {
     const checkedAllergies = document.querySelectorAll('input[name="allergy"]:checked');
     for (let i = 0; i < checkedAllergies.length; i++) {
       checkedAllergies[i].checked = false;
     }
   }
-  if (document.querySelector('.calculated-macros')) {
-    document.querySelector('.calculated-macros')?.remove();
-  }
   if (checkedNavOption === 'calculate') {
+    document.getElementById('submit-button')?.removeAttribute('class');
+    document.getElementById('submit-button').innerText = 'Calculate Macros';
     document.getElementById('generator-2').style.display = 'none';
     document.getElementById('generator-1').style.display = 'block';
   } else if (checkedNavOption === 'enter') {
+    document.getElementById('submit-button')?.setAttribute('class', 'plan-button');
+    document.getElementById('submit-button').innerText = 'Generate Meal Plan';
+    if (document.querySelector('.calculated-macros')) {
+      document.querySelector('.calculated-macros')?.remove();
+    }
     document.getElementById('generator-1').style.display = 'none';
     document.getElementById('generator-2').style.display = 'block';
   }
   return;
 });
 
-/* TODO: INPUT VALIDATION! */
 document.getElementById('submit-button')?.addEventListener('click', () => {
-  if (!document.getElementById('submit-button')?.classList.contains('plan-button')) {
-    let macros = {};
-    if (checkedNavOption === 'calculate') {
-      const height = document.getElementById('height-input')?.value;
-      const weight = document.getElementById('weight-input')?.value;
-      const age = document.getElementById('age-input')?.value;
-      const gender = document.querySelector('input[name="gender"]:checked')?.value;
-      const activityLevel = document.querySelector('input[name="activity-level"]:checked')?.value;
-      const goal = document.querySelector('input[name="goal"]:checked')?.value;
-      const dietType = document.querySelector('input[name="diet-type"]:checked')?.value;
-      const allergies = document.querySelectorAll('input[name="allergy"]:checked');
+  let macros = {};
+  if (checkedNavOption === 'calculate' && !document.getElementById('submit-button')?.classList.contains('plan-button')) {
+    const height = document.getElementById('height-input')?.value;
+    const weight = document.getElementById('weight-input')?.value;
+    const age = document.getElementById('age-input')?.value;
+    const gender = document.querySelector('input[name="gender"]:checked')?.value;
+    const activityLevel = document.querySelector('input[name="activity-level"]:checked')?.value;
+    const goal = document.querySelector('input[name="goal"]:checked')?.value;
+    const dietType = document.querySelector('input[name="diet-type"]:checked')?.value;
+    const allergies = document.querySelectorAll('input[name="allergy"]:checked');
+    if (validateInput({ height, weight, age })) {
       macros = calculateMacros({ height, weight, age, gender, activityLevel, goal });
+      displayMacros(macros);
       mealPlanInfo = { macros, dietType, allergies };
-    } else if (checkedNavOption === 'enter') {
-      const dietType = document.getElementById('diet-type-input')?.value;
-      const calories = document.getElementById('calories-input')?.value;
-      const protein = document.getElementById('protein-input')?.value;
-      const fats = document.getElementById('fats-input')?.value;
-      const carbohydrates = document.getElementById('carbohydrates-input')?.value;
-      const allergies = document.querySelectorAll('input[name="allergy"]:checked');
+    } else {
+      return;
+    }
+  } else if (checkedNavOption === 'enter') {
+    const dietType = document.getElementById('diet-type-input')?.value;
+    const calories = document.getElementById('calories-input')?.value;
+    const protein = document.getElementById('protein-input')?.value;
+    const fats = document.getElementById('fats-input')?.value;
+    const carbohydrates = document.getElementById('carbohydrates-input')?.value;
+    const allergies = document.querySelectorAll('input[name="allergy"]:checked');
+    if (validateInput({ calories, protein, fats, carbohydrates })) {
       macros = { calories, protein, fats, carbohydrates };
       mealPlanInfo = { macros, dietType, allergies };
+    } else {
+      return;
     }
-    displayMacros(macros);
+    generateMealPlan();
   } else {
     generateMealPlan();
   }
   return;
 });
+
+const validateInput = (input) => {
+  document.querySelector('.alert')?.remove();
+  document.querySelector('.alert-message')?.remove();
+  if (Object.keys(input).length === 3) {
+    if (input.height === '' || input.weight === '' || input.age === '') {
+      const div = document.createElement('div');
+      div.setAttribute('class', 'row m-0 px-3 alert');
+      const p = document.createElement('p');
+      p.setAttribute('class', 'alert-message p-0');
+      p.innerText = 'Some input fields are empty! Try again!';
+      div.append(p);
+      const nav = document.getElementById('nav');
+      nav?.parentNode?.insertBefore(div, nav.nextSibling);
+      return false;
+    } else if (!(input.height >= 100 && input.height <= 250)) {
+      const p = document.createElement('p');
+      p.setAttribute('class', 'alert-message p-0');
+      p.innerText = 'Height must be a number between 100-250 (cm)! Try again!';
+      const heightInput = document.getElementById('height-input');
+      heightInput?.parentNode?.insertBefore(p, heightInput);
+      return false;
+    } else if (!(input.weight >= 30 && input.weight <= 300)) {
+      const p = document.createElement('p');
+      p.setAttribute('class', 'alert-message p-0');
+      p.innerText = 'Weight must be a number between 30-300 (kg)! Try again!';
+      const weightInput = document.getElementById('weight-input');
+      weightInput?.parentNode?.insertBefore(p, weightInput);
+      return false;
+    } else if (!(input.age >= 14 && input.age <= 99)) {
+      const p = document.createElement('p');
+      p.setAttribute('class', 'alert-message p-0');
+      p.innerText = 'Age must be a number between 14-99 (years)! Try again!';
+      const ageInput = document.getElementById('age-input');
+      ageInput?.parentNode?.insertBefore(p, ageInput);
+      return false;
+    }
+  } else if (Object.keys(input).length === 4) {
+    if (input.calories === '' || input.protein === '' || input.fats === '' || input.carbohydrates === '') {
+      const div = document.createElement('div');
+      div.setAttribute('class', 'row m-0 px-3 alert');
+      const p = document.createElement('p');
+      p.setAttribute('class', 'alert-message p-0');
+      p.innerText = 'Some input fields are empty! Try again!';
+      div.append(p);
+      const nav = document.getElementById('nav');
+      nav?.parentNode?.insertBefore(div, nav.nextSibling);
+      return false;
+    } else if (input.calories < 0 || input.protein < 0 || input.fats < 0 || input.carbohydrates < 0) {
+      const div = document.createElement('div');
+      div.setAttribute('class', 'row m-0 px-3 alert');
+      const p = document.createElement('p');
+      p.setAttribute('class', 'alert-message p-0');
+      p.innerText = 'All input fields must have a positive value! Try again!';
+      div.append(p);
+      const nav = document.getElementById('nav');
+      nav?.parentNode?.insertBefore(div, nav.nextSibling);
+      return false;
+    }
+  }
+  return true;
+};
 
 /* these formulas are used: https://www.lvac.com/blog/calculate-macronutrients/! */
 /* this knowledge is used: https://healthyeater.com/flexible-dieting-calculator! */
@@ -97,11 +169,15 @@ const calculateMacros = (input) => {
 
 const displayMacros = (macros) => {
   document.getElementById('submit-button')?.setAttribute('class', 'plan-button');
+  document.getElementById('submit-button').innerText = 'Generate Meal Plan';
+
   const div = document.createElement('div');
   div.setAttribute('class', 'calculated-macros');
+
   const h1 = document.createElement('h1');
   h1.innerText = 'Your Suggested Macros';
   div.append(h1);
+
   const rowFirst = document.createElement('div');
   rowFirst.setAttribute('class', 'row');
   const colFirst = document.createElement('div');
@@ -114,7 +190,7 @@ const displayMacros = (macros) => {
   colFirst.append(calories);
   colFirst.append(caloriesNum);
   rowFirst.append(colFirst);
-  div.append(rowFirst);
+
   const rowSecond = document.createElement('div');
   rowSecond.setAttribute('class', 'row');
   const colSecond1 = document.createElement('div');
@@ -147,16 +223,23 @@ const displayMacros = (macros) => {
   rowSecond.append(colSecond1);
   rowSecond.append(colSecond2);
   rowSecond.append(colSecond3);
+
+  div.append(rowFirst);
   div.append(rowSecond);
+
   const submitButtonDiv = document.getElementById('button');
   submitButtonDiv?.parentNode?.insertBefore(div, submitButtonDiv);
 };
 
 const generateMealPlan = async () => {
+  document.querySelector('.generator').style.display = 'none';
+  document.querySelector('.loader').style.display = 'block';
   const breakfastMeals = extractMealsInfo(await fetchData('Breakfast', mealPlanInfo));
   const lunchMeals = extractMealsInfo(await fetchData('Lunch', mealPlanInfo));
   const dinnerMeals = extractMealsInfo(await fetchData('Dinner', mealPlanInfo));
-  completeMealPlan = { breakfastMeals, lunchMeals, dinnerMeals };
+  localStorage.setItem('completeMealPlan', JSON.stringify({ breakfastMeals, lunchMeals, dinnerMeals }));
+  document.querySelector('.loader').style.display = 'none';
+  document.querySelector('.generator').style.display = 'block';
   window.location.href = '../meal-plan.html';
   return;
 };
@@ -184,9 +267,9 @@ const fetchData = async (mealType, input) => {
     mealType,
     input.macros.fats
   )}&nutrients%5BCHOCDF%5D=${valueBasedOnMealType(mealType, input.macros.carbohydrates)}${dietType}${allergies}`;
-  console.log(additionalData);
   try {
     const response = await fetch(BASE_URL + AUTH_INFO + additionalData).then((res) => res.json());
+    console.log(response);
     return response;
   } catch (error) {
     console.log(error);
@@ -208,13 +291,15 @@ const valueBasedOnMealType = (mealType, category) => {
 const extractMealsInfo = (input) => {
   const arrayOfMeals = [];
   for (let i = 0; i < 7; i++) {
-    const calories = input.hits[i].recipe.calories;
     const label = input.hits[i].recipe.label;
     const ingredients = input.hits[i].recipe.ingredientLines;
-    const meal = { calories, label, ingredients };
+    const image = input.hits[i].recipe.image;
+    const calories = Number(input.hits[i].recipe.calories.toFixed(0));
+    const protein = Number(input.hits[i].recipe.totalNutrients.PROCNT.quantity.toFixed(0));
+    const fat = Number(input.hits[i].recipe.totalNutrients.FAT.quantity.toFixed(0));
+    const carbohydrates = Number(input.hits[i].recipe.totalNutrients.CHOCDF.quantity.toFixed(0));
+    const meal = { label, ingredients, image, calories, protein, fat, carbohydrates };
     arrayOfMeals.push(meal);
   }
   return arrayOfMeals;
 };
-
-export default completeMealPlan;

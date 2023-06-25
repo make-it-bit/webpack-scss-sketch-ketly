@@ -47,13 +47,7 @@ module.exports = {
       chunks: ['mealPlan'],
     }),
     new MiniCssExtractPlugin({
-      filename: './css/_reset.css',
-    }),
-    new MiniCssExtractPlugin({
-      filename: './css/_bootstrap-grid.css',
-    }),
-    new MiniCssExtractPlugin({
-      filename: './css/_index.css',
+      filename: './css/[name].css',
     }),
   ],
 

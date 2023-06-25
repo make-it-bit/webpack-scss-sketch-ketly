@@ -1,9 +1,4 @@
-$light-purple: #d4cfe8;
-$dark-purple: #5734d8;
-$white: #ffffff;
-$black: #000000;
-$light-grey: #d3d3d3;
-$dark-grey: #5c5c5c;
+@import '_variables.scss';
 
 body {
   display: flex;
@@ -81,6 +76,10 @@ body {
       margin-bottom: 10px;
       cursor: pointer;
       transition: all 0.2s;
+    }
+
+    .alert-message {
+      color: rgb(245, 67, 67);
     }
 
     #generator-1 {
@@ -178,6 +177,26 @@ body {
       padding: 10px;
       margin: 0;
       cursor: pointer;
+    }
+  }
+
+  .loader {
+    width: 5rem;
+    height: 5rem;
+    border: 5px solid $black;
+    border-top: 6px solid $dark-purple;
+    border-radius: 100%;
+    margin: auto;
+    animation: spin 1s infinite linear;
+    display: none;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
     }
   }
 
