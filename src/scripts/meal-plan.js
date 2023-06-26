@@ -1,6 +1,6 @@
-import '../scss/_reset.scss';
-import '../scss/_meal-plan.scss';
-import '../scss/_bootstrap-grid.scss';
+import '../styles/_reset.scss';
+import '../styles/_meal-plan.scss';
+import '../styles/_bootstrap-grid.scss';
 
 const completeMealPlan = JSON.parse(localStorage.getItem('completeMealPlan'));
 

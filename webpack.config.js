@@ -1,21 +1,20 @@
 const path = require('path');
 
+const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
-/* copyplugin ja babel ka? */
 
 module.exports = {
   mode: 'development',
 
   entry: {
-    index: './src/js/index.js',
-    mealPlan: './src/js/meal-plan.js',
+    index: './src/scripts/index.js',
+    mealPlan: './src/scripts/meal-plan.js',
   },
 
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: './js/[name].js',
+    filename: './scripts/[name].js',
   },
 
   module: {
@@ -30,10 +29,23 @@ module.exports = {
           { loader: 'sass-loader' },
         ],
       },
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: ['babel-loader'],
+      },
     ],
   },
 
   plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'src'),
+          to: './src/public' /* ??? */,
+        },
+      ],
+    }),
     new HtmlWebpackPlugin({
       title: 'project 7 - index.html',
       template: path.resolve(__dirname, './src/index.html'),
@@ -53,8 +65,9 @@ module.exports = {
 
   devServer: {
     static: {
-      directory: path.resolve(__dirname, 'public') /* src kausta pane public kaust? */,
+      directory: path.resolve(__dirname, 'public'),
     },
+    /* miks hosti vaja? webpack ametlikul lehel ka polnud seda näidetes! */
     compress: true,
     port: 8080,
   },

@@ -1,6 +1,6 @@
-import '../scss/_reset.scss';
-import '../scss/_index.scss';
-import '../scss/_bootstrap-grid.scss';
+import '../styles/_reset.scss';
+import '../styles/_index.scss';
+import '../styles/_bootstrap-grid.scss';
 
 let checkedNavOption = 'calculate';
 let mealPlanInfo = {};
@@ -132,18 +132,17 @@ const validateInput = (input) => {
   return true;
 };
 
-/* these formulas are used: https://www.lvac.com/blog/calculate-macronutrients/! */
-/* this knowledge is used: https://healthyeater.com/flexible-dieting-calculator! */
+/* https://www.forbes.com/health/body/bmr-calculator/, https://www.lvac.com/blog/calculate-macronutrients/, https://healthyeater.com/flexible-dieting-calculator! */
 const calculateMacros = (input) => {
   let bmr = 0;
   if (input.gender === 'male') {
-    bmr = 66 + 6.2 * input.weight + 12.7 * input.height - 6.76 * input.age;
+    bmr = 10 * input.weight + 6.25 * input.height - 5 * input.age + 5;
   } else if (input.gender === 'female') {
-    bmr = 655.1 + 4.35 * input.weight + 4.7 * input.height - 4.7 * input.age;
+    bmr = 10 * input.weight + 6.25 * input.height - 5 * input.age - 161;
   }
   let tdee = 0;
   if (input.activityLevel === 'sedentary') {
-    tdee = 12 * bmr;
+    tdee = 1.2 * bmr;
   } else if (input.activityLevel === 'lightly-active') {
     tdee = 1.375 * bmr;
   } else if (input.activityLevel === 'active') {
@@ -161,9 +160,9 @@ const calculateMacros = (input) => {
   } else if (input.goal === 'gain-weight') {
     calories = Number((tdee + tdee * 0.2).toFixed(0));
   }
-  const protein = Number(((calories * 0.3) / 4).toFixed(0));
-  const fats = Number(((calories * 0.3) / 4).toFixed(0));
-  const carbohydrates = Number(((calories * 0.4) / 4).toFixed(0));
+  const protein = Number(((calories * 0.4) / 4).toFixed(0));
+  const fats = Number(((calories * 0.15) / 4).toFixed(0));
+  const carbohydrates = Number(((calories * 0.45) / 4).toFixed(0));
   return { calories, protein, fats, carbohydrates };
 };
 
@@ -244,7 +243,6 @@ const generateMealPlan = async () => {
   return;
 };
 
-/* TODO: ERROR HANDLING! */
 const fetchData = async (mealType, input) => {
   const BASE_URL = 'https://api.edamam.com/api/recipes/v2?type=public';
   const AUTH_INFO = '&app_id=a8a1b73a&app_key=34a790e3c4f9bc291c294b8b542bfaa7';
@@ -269,15 +267,19 @@ const fetchData = async (mealType, input) => {
   )}&nutrients%5BCHOCDF%5D=${valueBasedOnMealType(mealType, input.macros.carbohydrates)}${dietType}${allergies}`;
   try {
     const response = await fetch(BASE_URL + AUTH_INFO + additionalData).then((res) => res.json());
-    console.log(response);
     return response;
   } catch (error) {
-    console.log(error);
+    if (error.message === 'Failed to fetch') {
+      alert('Vastust ei ole võimalik kuvada, sest siht-veebiaadress on vigane! Proovi uuesti!');
+    } else {
+      alert('Tekkis tundmatu viga! Proovi mõne aja pärast uuesti!');
+    }
+    window.location.href = './index.html';
     return;
   }
 };
 
-/* i found out that these meal-type percentages are typical! */
+/* these meal-type percentages should be typical! */
 const valueBasedOnMealType = (mealType, category) => {
   if (mealType === 'Breakfast') {
     return Number((category * 0.35).toFixed(0));
