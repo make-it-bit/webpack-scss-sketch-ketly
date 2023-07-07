@@ -2,6 +2,8 @@ import '../styles/_reset.scss';
 import '../styles/_index.scss';
 import '../styles/_bootstrap-grid.scss';
 
+import errorMessages from '../errorMessages';
+
 let checkedNavOption = 'calculate';
 let mealPlanInfo = {};
 
@@ -266,9 +268,14 @@ const fetchData = async (mealType, input) => {
     input.macros.fats
   )}&nutrients%5BCHOCDF%5D=${valueBasedOnMealType(mealType, input.macros.carbohydrates)}${dietType}${allergies}`;
   try {
+    // const response = await fetch(BASE_URL + AUTH_INFO + additionalData);
+    // if (!response.ok) throw new Error(response.statusText);
     const response = await fetch(BASE_URL + AUTH_INFO + additionalData).then((res) => res.json());
     return response;
   } catch (error) {
+    if (errorMessages[error.message]) return alert(errorMessages[error.message]);
+    alert('Tekkis tundmatu viga! Proovi mõne aja pärast uuesti!');
+
     if (error.message === 'Failed to fetch') {
       alert('Vastust ei ole võimalik kuvada, sest siht-veebiaadress on vigane! Proovi uuesti!');
     } else {
@@ -281,13 +288,9 @@ const fetchData = async (mealType, input) => {
 
 /* these meal-type percentages should be typical! */
 const valueBasedOnMealType = (mealType, category) => {
-  if (mealType === 'Breakfast') {
-    return Number((category * 0.35).toFixed(0));
-  } else if (mealType === 'Lunch') {
-    return Number((category * 0.4).toFixed(0));
-  } else if (mealType === 'Dinner') {
-    return Number((category * 0.25).toFixed(0));
-  }
+  if (mealType === 'Breakfast') return Number((category * 0.35).toFixed(0));
+  if (mealType === 'Lunch') return Number((category * 0.4).toFixed(0));
+  if (mealType === 'Dinner') return Number((category * 0.25).toFixed(0));
 };
 
 const extractMealsInfo = (input) => {
